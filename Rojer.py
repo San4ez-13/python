@@ -1,6 +1,36 @@
 from random import randint, choice
 from timeit import default_timer
 
+
+def time_endings (digit):
+    if digit == 11:
+        return ''
+    else:
+        digit = str(digit)
+        last_digit = digit[-1]
+        if  last_digit == '1':
+            return 'у'
+        elif  1 < int(last_digit) < 5:
+            return 'ы'
+        else:
+            return ''
+
+
+def seconds_convert (time_in_seconds):
+    if time_in_seconds < 60:
+        spent = (f'{time_in_seconds} секунд{time_endings(time_in_seconds)}')
+    else:
+        minutes = time_in_seconds // 60
+        seconds = time_in_seconds - (minutes * 60)
+
+        if seconds == 0:
+            spent = (f'{minutes} минут{time_endings(minutes)}')
+        else:
+            spent = (f'{minutes} минут{time_endings(minutes)} и {seconds} секунд{time_endings(seconds)}')
+
+    return spent
+
+
 print ('Привет! Меня зовут Роджер. А как тебя?')
 name = input()
 name = name.title()
@@ -65,9 +95,9 @@ if fails != 0:
     print(f'''
 Правильных ответов: {correct_answers}
 Ошибок: {fails}
-Затраченное время: {spent_time}''')
+Затраченное время: {seconds_convert(spent_time)}''')
 else:
-    print(f'Ты ответил правильно на все вопросы за: {spent_time}!')
+    print(f'Ты ответил правильно на все вопросы за: {seconds_convert(spent_time)}!')
 
 
 
