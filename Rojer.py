@@ -1,15 +1,22 @@
 from random import randint, choice
 from timeit import default_timer
+import os
 
 
 def select_mode():
-    print('''
+    if os.path.exists(f'{name}_errors.txt'):
+            print('''
+        1 - тренировка
+        2 - работа над ошибками
+        0 - выход
+    ''')
+    else:
+        print('''
     1 - тренировка
     0 - выход
 ''')
     mode = int(input())
     return mode
-
 
 def time_endings(digit):
     if digit == 11:
@@ -106,7 +113,7 @@ def training():
                 print('Правильно!')
                 correct_answers += 1
             else:
-                f = open(f'{name}.errors', 'a')
+                f = open(f'{name}_errors.txt', 'a')
                 f.write(f'{number1} {sign} {number2}\n')
                 f.close()
                 fails += 1
@@ -119,6 +126,16 @@ def training():
     Затрачено времени: {seconds_convert(spent_time)}''')
     else:
         print(f'Ты решил без ошибок за {seconds_convert(spent_time)}')
+
+
+def errors_handling(file_name):
+    print('Работа над ошибками '+file_name)
+    with open(file_name, 'r') as f1, open(f'tmp_{file_name}', 'a') as f2:
+        for line in f1:
+            line = line.split()
+            number1, sign, number2 = line
+            print(number1, sign, number2)
+
 
 #Основной блок программы
 print('Привет! Меня зовут Роджер. А как тебя?')
@@ -135,6 +152,8 @@ while True:
     elif mode == 0:
         print('Пока!')
         break
+    elif mode == 2:
+        errors_handling(f'{name}_errors.txt')
     else:
 #пусто(ничего), так не будет жаловаться
         pass
