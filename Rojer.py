@@ -129,12 +129,46 @@ def training():
 
 
 def errors_handling(file_name):
-    print('Работа над ошибками '+file_name)
+
     with open(file_name, 'r') as f1, open(f'tmp_{file_name}', 'a') as f2:
+    
+        correct_answers = 0
+        fails = 0
+        spent_time = 0
+
         for line in f1:
             line = line.split()
             number1, sign, number2 = line
-            print(number1, sign, number2)
+
+
+            number1 = int(number1)
+            number2 = int(number2)
+
+
+            if sign == '-':
+                correct_answer = number1 - number2
+
+
+            if sign == '+':
+                correct_answer = number1 + number2
+
+
+            print('Сколько будет:', number1, sign, number2, '?')
+
+            start = default_timer()
+            answer = input('Введи ответ:\n')
+            stop = default_timer()
+            spent_time += round(stop - start)
+
+            if int(answer) == correct_answer:
+                print('Правильно!')
+                correct_answers += 1
+            else:
+                f2.write(f'{number1} {sign} {number2}\n')
+                fails += 1
+                print(f'''Неправильно!
+        Правильный ответ: {correct_answer}''')
+
 
 
 #Основной блок программы
