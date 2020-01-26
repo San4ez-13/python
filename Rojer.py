@@ -114,7 +114,7 @@ def training():
                 correct_answers += 1
             else:
                 f = open(f'{name}_errors.txt', 'a')
-                f.write(f'{number1} {sign} {number2}\n')
+                f.write(f'{number1} {sign} {number2} 3\n')
                 f.close()
                 fails += 1
                 print(f'''Неправильно!
@@ -138,12 +138,12 @@ def errors_handling(file_name):
 
         for line in f1:
             line = line.split()
-            number1, sign, number2 = line
+            number1, sign, number2, correct_answers_to_solve = line
 
 
             number1 = int(number1)
             number2 = int(number2)
-
+            correct_answers_to_solve = int(correct_answers_to_solve)
 
             if sign == '-':
                 correct_answer = number1 - number2
@@ -161,14 +161,22 @@ def errors_handling(file_name):
             spent_time += round(stop - start)
 
             if int(answer) == correct_answer:
+                if correct_answers_to_solve > 1:
+                    f2.write(f'{number1} {sign} {number2} {correct_answers_to_solve-1}\n')
                 print('Правильно!')
                 correct_answers += 1
             else:
-                f2.write(f'{number1} {sign} {number2}\n')
+                f2.write(f'{number1} {sign} {number2} {correct_answers_to_solve}\n')
                 fails += 1
                 print(f'''Неправильно!
         Правильный ответ: {correct_answer}''')
 
+
+    os.remove(file_name)
+    if os.path.getsize(f'tmp_{file_name}') > 0:
+        os.rename(f'tmp_{file_name}', file_name)
+    else:
+        os.remove(f'tmp_{file_name}')
 
 
 #Основной блок программы
