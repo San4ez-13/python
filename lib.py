@@ -12,7 +12,3 @@ def check_input(user_input: str, allowed_values: list, user_message: str = 'По
         user_input = input(user_message)
 
     return user_input
-
-
-
-check_input('dddd',['1','2'])

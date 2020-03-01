@@ -2,6 +2,35 @@ from random import randint, choice
 from timeit import default_timer
 from lib import check_input
 import os
+import json
+
+
+def auth_and_register():
+    filename = 'users.json'
+    users_list = {}
+    #если файла с пользователями не существует
+    if not os.path.exists(filename):
+        with open(filename, 'w', encoding='utf-8') as f: 
+            #для чтения кириллицы
+            json.dump(users_list, f, ensure_ascii=False)
+    #загрузим список пользователей
+    with open(filename, 'r', encoding='utf-8') as f: 
+        users_list = json.load(f)
+    name = input('Привет! Меня зовут Роджер. А как тебя?\n')
+    name = name.title()    
+    #если пользователь не существует
+    if name not in users_list:
+        password = input('Придумайте пароль:\n')
+        users_list[name] = password
+        with open(filename, 'w', encoding='utf-8') as f: 
+            json.dump(users_list, f, ensure_ascii=False)
+        print('Успешная регестрация!')
+    else:
+        password = input('Введите пароль:\n')
+        if password == users_list[name]:
+            print('Вход выполнен!')
+        else:
+            print('Неверный пароль!')
 
 
 def select_mode():
@@ -182,10 +211,7 @@ def errors_handling(file_name):
 
 
 #Основной блок программы
-print('Привет! Меня зовут Роджер. А как тебя?')
-name = input()
-name = name.title()
-print('Приятно познакомиться, '+name)
+auth_and_register()
 
 #цикл повторяется бесконечно
 while True:
